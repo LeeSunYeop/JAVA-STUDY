@@ -11,6 +11,8 @@ public class Enemy {
 			this.atk = atk;
 		}
 		
+		
+		
 		 void attack(Player player) {
 			
 			System.out.println("Enemy Attack!");
