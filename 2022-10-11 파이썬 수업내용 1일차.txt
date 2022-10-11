@@ -1,0 +1,415 @@
+하둡 에코 시스템이라는 것을 학습..
+- 하둡 분산 파일 시스템을 구현하여 데이터 분석을 할 때 사용하는 각각의 프레임 워크 
+및 툴에 대한 목록과 그들에 대한 기능...
+
+각종 데이터를 수집하고자 하는 욕구가 발생함
+
+| 데이터 수집을 용이하게 하고 싶음
+nutch 탄생(tool): nutch 프로젝트, 데이터 수집을 용이하게 함.
+
+| 데이터를 저장하고 싶은 욕구
+HDFS: GDFS(구글 분산 파일 시스템)의 논문을 읽고 NDFS을 만들었음. 그리고 NDFS를 개선해서 HDFS가 만들어 집니다. 빅데이터 저장용
+
+| 데이터를 분석하고  싶은 욕구, 원격지의 데이터를 이용해서 병렬 데이터 분석: 네트워크, I/O, RMI, Thread 기술을 이용함.
+Hadoop mapReduce(하둡 맵리듀스): mapper map() reduce reduce()를 이용해서 지원함. GMapReduce를 벤치마킹
+
+| mapReduce 데이터 관리를 함 + 리소스 관리를 하는데, 시간이 지남에 따라서 리소스 관리에 많은 시간과 자원을 소모함.
+YARN이 개발이 됨. 하둡2버전대에서 도입... 리소스관리만..이 YARN 위에서 mapReduce가 데이터 관리만 전담하면서 동작함.
+
+| nutch 프로젝트에서 HDFS와 Hadoop mapReduce의 규모가 어마어마하게 커집니다. 두 개를 독립시킴
+Hadoop의 탄생..hadoop.apache.org
+
+| 데이터 수집 단계에서 하둡으로 데이터를 분석하기 위해서 HDFS에 데이터를 저장해야 합니다. 근데 기존에 수집한 데이터..data base(DB)
+DB에 있는 데이터를 HDFS에 저장하려면 어렵습니다. 쉬운 방법이 없나?
+비정형데이터: flume, scribe
+정형데이터: sqoop
+
+| mapReduce를 구현하려면 자바(java)를 배워야 합니다. 데이터 분석: DB개발자, 관리자들이 많이 함.
+hive, pig, impala 등이 있었음. ===> spark: java, python, R, sql |||| 배치 데이터, 실시간 데이터를 다 지원함.
+
+| 데이터 분석을 하고 나면, 보고서 작성하고 시각화..
+python: matplot, 
+javacript: d3.js, charjs.js
+R: ggplot2, java: 시각화가 어려움
+
+| 하둡 시스템은 복수의 프레임워크나 툴을 이용해서 구성한 시스템. 다수의 프로세스를 관리할 도구 필요. 모니터링 및 관리
+Ganglia: 시스템 리소스 모니터링(램, cpu), 
+Nagios: 네트워크 모니터링, 
+Hue: 저장장치에 대한 ui, 
+chef: 프로그램  설치를 단순화
+
+| 하둡의 네임노드(하둡에서 노드라는 것은 컴퓨터를 말함)에 문제가 발생하면, 하둡 시스템은 멈춤. 그러면 어떻게 해야 네임노드에 문제가 있어도 하둡 시스템이 계속 가동될까?
+세컨더리 네임 노드를 이용한 이중화 작업을 해야 함
+zookeeper: 분산코디네이터, 이중화 작업 => 고가용성이(HA) 보장됨
+
+| 하둡 시스템을 이용해서 빅데이터 분석을 하고 싶다. 어떤 언어를 사용해야 할까?
+python, R, java를 이용해서 빅데이터 분석 프로그래밍 가능
+
+| 일반적으로 하둡은 OLAP용도임. 이것을 OLTP 용도로 사용하고 싶을 때가 있음.
+HBASE: OLTP 용도를 추가하고 싶을 때..
+
+===========
+hadoop(HDFS): read only 용도로 사용해야 함. ==> OLAP(online analisis process)용도로 사용해야 함
+
+DB: OLTP(online Transaction Process)
+
+
+#############################설치#####################
+아나콘다로 설치가 힘들면 
+미니콘다로 설치
+
+아나콘다 사이트접속-다운로드-next하다보면 - 박스한개만 체크되어잇는거 하나더 체크해서 총 두개 체크-계속 next
+돋보기창에 jupyter notebook 실행프로그램 없으면 cmd에다 jupyter notebook 입력해서 localhost주소 복사 크롬에 붙여넣기 하기
+
+아나콘다 설치 후에
+jupyter notebook 앱이 안 보일 때
+cmd 창을 열고
+pip install --upgrade pip
+pip install jupyter
+를 순차적으로 입력하세요
+
+
+
+10진수
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+10,11,12,13,14,15,16,17,18,19
+20,21..
+
+8진수 표기법
+octal
+0 ~ 7
+10(8) 
+0o12  숫자랑 소문자o 하고 헷갈리기 때문에 숫자0부터 쓴다
+
+16진수 표기법
+  0  1  2   3  4  5   6  7   8  9  A   B  C   D  E   F
+10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F
+
+=====사칙연산: +, -, *, /, //, %
+
+=====문자열 표기법: " ", ' ', """ """, ''' '''
+입력
+str1 = "hello world"
+str2 = 'good morninig'
+str3 = """hello
+world"""
+str4 = '''good
+morning'''
+
+print(str1, str2, str3, str4)
+
+출력
+hello world good morninig hello
+world good
+morning
+
+입력
+str5 = "hello\nworld"
+print(str5)
+출력
+hello
+world
+
+str6 =I'm happy 나오게 하기
+입력
+str6 = "I'm happy"
+print(str6)
+출력
+I'm happy
+
+
+str7 = I said "stop!" 나오게 하기
+입력
+str7 = 'I said "stop!"'
+print(str7)
+출력
+I said "stop!"
+
+문자열 더하기
+입력
+str8 = str1 + str2
+print(str8)
+출력
+hello worldgood morninig
+
+같은 문자연속 나오게 하기
+입력
+print(str6 * 10)
+출력
+I'm happyI'm happyI'm happyI'm happyI'm happyI'm happyI'm happyI'm happyI'm happyI'm happy
+
+별100개 찍기
+입력
+print("*" * 100)
+출력
+****************************************************************************************************
+
+R에서 문자열 안 됩니다
+paste( )
+paste0( )
+
+
+======================
+33을 8진수로 표현하고 z에다 넣기
+z = 0o33
+
+33을 16진수로 표현하고 y에다 넣기
+y = 0x33
+
+1x10의5승 표현하고 x에다 넣기
+x = 1e5
+
+10을 4로 나누었을 때, 몫만 구하는 연산식
+10 // 4
+
+나머지만 구하는 연산식
+10 % 4
+
+
+R에서 길이를 알고 싶을 때, 사용했던 함수? len
+
+문자길이 나타내기
+입력
+str1
+len(str1)
+출력
+11
+
+str10 = I'm happy. I said "Stop!" 나오게 하기
+입력
+str10 = """I'm happy. I said "Stop!" """
+print(str10)
+len(str10)
+출력
+I'm happy. I said "Stop!"
+26 (띄워쓰기까지 포함)
+
+str11 = I'm happy. I said "Stop!" 나오게 하기
+입력
+str11 = '''I'm happy. I said "Stop!"'''
+print(str11)
+len(str11)
+출력
+I'm happy. I said "Stop!"
+25 (작은따옴표는 띄워쓰기 안해도 출력이 가능하다)
+
+#########################
+
+인덱스 & 슬라이싱(문자를 여러개 가져오는걸 슬라이싱이라고 한다)
+
+입력
+str1 = "good"
+len(str1)
+출력
+4
+
+
+최대 인덱스 = 길이 -1
+글자 출력하기      
+입력
+str1[0]        첫글자는 0번부터 시작함
+출력
+'g'
+
+글자 뒤에서부터 출력하기
+입력
+str1[-1]               str1[-4]
+출력
+'d'                      'g'
+
+#######################
+슬라이싱 하거나 특정 범위를 입력하는 함수(메서드)에서 값을 입력할 때
+(a, b): a <= x <= b 한국에선 가능하지만 외국에선 불가능
+(a, b): a <= x < b   외국에선 이렇게 써야함
+
+입력
+str2 = '''I'm happy. I said "Stop"'''
+print(str2)
+출력
+I'm happy. I said "Stop"
+
+
+입력
+str2[4] + str2[5] + str2[6] + str2[7] + str2[8]
+출력
+'happy'
+
+입력
+str2[4:8]         str2[4:9]
+출력
+'happ'            'happy'
+
+said 슬라이싱 하기
+입력
+str2[13:17]
+출력
+'said'
+
+I'm happy. I said "Stop" 에서 h이후부터 다 가져오기
+입력
+print(str2[4:])
+출력
+happy. I said "Stop"
+
+"I'm happy. I " 출력하기
+입력
+str2[0:13]      또는      str2[:13]
+출력
+"I'm happy. I "
+
+
+I'm happy. I said "St 까지 뒤에서 가져오기
+입력
+str2[:-3]
+출력
+'I\'m happy. I said "St'
+
+I'm happy. I said "Stop" 출력하기
+입력
+print(str2[:])
+출력
+I'm happy. I said "Stop"
+
+날짜와 날씨상태 각각 출력하기
+weather = "20221011Sunny"  
+입력
+data = weather[:8]         # 날짜만 출력하기
+wheather = weather[-5:]  # 날씨상태만 출력하기
+print(data, wheather)
+출력
+20221011 Sunny
+
+#############################
+
+문자열 포매팅
+# I am 20 years old.
+# I am 30 years old.
+# I am 40 years old.
+# I am 50 years old. 
+
+반복된 문자 와 변동되는 숫자   %d 나 %s 넣으면 된다
+입력
+str = "I am %d years old" %(30)     또는    str = "I am %s years old" %(30)
+print(str)                                           print(str)  
+출력
+I am 30 years old
+
+
+이름 과 나이 입력하기
+입력
+str = "I am %s. I am %s years old" %("Tom", "40")
+print(str)
+출력
+I am Tom. I am 40 years old
+
+
+0.25 is 25% 출력하기
+입력
+str2 = "0.25 is 25%"       또는     str2 = "%s is %s%%" %(0.25, 25)   -> %를 한번더 쓴다, 안쓰면 오류뜸
+print(str2)                              print(str2)
+출력
+0.25 is 25%
+
+########################
+f문자열 포매팅
+
+입력
+name = "홍길동"
+age = 16
+str3 = f'내 이름은 {name}입니다. 나이는 {age}입니다.'
+print(str3)
+출력
+내 이름은 홍길동입니다. 나이는 16입니다.
+
+
+0.25는 25%입니다. 나오게 하기
+입력
+val1 = 0.25
+val2 = 25
+val3 = f'{val1}는 {val2}%입니다.'
+print(val3)
+출력
+0.25는 25%입니다.      %를 두번 안적어도 된다
+
+############
+문자를 왼쪽으로부터 10칸 정렬하라
+입력
+f'{"hi":<10}'       :< 왼쪽으로 정렬하라는 뜻
+출력
+'hi        '
+
+입력           
+f'{"hi":>10}'       :> 오른쪽 정렬
+출력
+'        hi'
+
+입력
+f'{"hi":^10}'       :^ 가운데로 정렬하라는 뜻
+출력
+'    hi    '
+
+입력
+f'{"hi":<>10}'        :>오른쪽 정렬하고, 10칸 채우라는 뜻이며, 빈칸은 <표시로 채우는거다
+출력
+'<<<<<<<<hi'              
+
+입력
+f'{"hi":x>10}'    :>왼쪽으로 정렬하고, 10칸 채우며, x표시로 빈칸 채우는거다
+출력
+'xxxxxxxxhi'
+
+01, 02, 03, 04 ~ 10, 11, 12
+  03(왼쪽으로 두칸띄고) 출력하게 하라
+
+입력
+month = 3                                 
+smonth = f'{month:0>2}'                        
+print(smonth)
+출력
+03
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
